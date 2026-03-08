@@ -25,7 +25,16 @@ export default function PlanningPoker() {
     const sessionRef = ref(db, "session");
     const unsub = onValue(sessionRef, (snapshot) => {
       const data = snapshot.val();
-      if (data) setSession(data);
+      if (data) {
+        setSession(prev => {
+          // New round started: revealed flipped true → false
+          if (prev.revealed === true && data.revealed === false) {
+            setSelectedCard(null);
+            setSubmitted(false);
+          }
+          return data;
+        });
+      }
     });
     return () => unsub();
   }, [screen]);
