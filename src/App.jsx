@@ -24,7 +24,6 @@ export default function PlanningPoker() {
   const [newMemberName, setNewMemberName] = useState("");
 
   useEffect(() => {
-    if (screen === "join") return;
     const sessionRef = ref(db, "session");
     const unsub = onValue(sessionRef, (snapshot) => {
       const data = snapshot.val() || {};
@@ -37,7 +36,7 @@ export default function PlanningPoker() {
       });
     });
     return () => unsub();
-  }, [screen]);
+  }, []);
 
   const team = session.team || {};
   const teamNames = Object.keys(team);
