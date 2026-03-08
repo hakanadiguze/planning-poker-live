@@ -16,6 +16,8 @@ export default function PlanningPoker() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [session, setSession] = useState({ votes: {}, revealed: false, story: "User story..." });
+  const [editingStory, setEditingStory] = useState(false);
+  const [storyDraft, setStoryDraft] = useState("");
 
   // Listen to Firebase in real time
   useEffect(() => {
@@ -209,8 +211,6 @@ export default function PlanningPoker() {
 
   // ─── SCRUM MASTER ──────────────────────────────────────────────
   if (screen === "master") {
-    const [editingStory, setEditingStory] = useState(false);
-    const [storyDraft, setStoryDraft] = useState(story);
 
     return (
       <div style={s.page}>
