@@ -8,14 +8,11 @@ const CARD_COLORS = {
   "5": "#FFEAA7", "8": "#DDA0DD", "13": "#F0A500",
   "21": "#FF6B6B", "Huge": "#2D3436"
 };
-const SM_PASSWORD = "ScrumMaster";
 
 export default function PlanningPoker() {
   const [screen, setScreen] = useState("join");
   const [name, setName] = useState("");
   const [role, setRole] = useState("voter");
-  const [passwordInput, setPasswordInput] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [session, setSession] = useState({ votes: {}, revealed: false, story: "User story to estimate...", team: {} });
@@ -56,9 +53,7 @@ export default function PlanningPoker() {
 
   const handleJoinAsVoter = () => { if (name) setScreen("voter"); };
 
-  const handleJoinAsMaster = () => {
-    if (passwordInput !== SM_PASSWORD) { setPasswordError(true); return; }
-    setPasswordError(false);
+const handleJoinAsMaster = () => {
     onValue(ref(db, "session/revealed"), (snap) => {
       if (snap.val() === null) {
         set(ref(db, "session/revealed"), false);
@@ -135,17 +130,6 @@ export default function PlanningPoker() {
             </>
           ) : (
             <>
-              <div style={s.field}>
-                <label style={s.label}>SCRUM MASTER PASSWORD</label>
-                <input
-                  style={{ ...s.input, borderColor: passwordError ? "#EF476F" : "#2a2a3e" }}
-                  type="password" placeholder="Enter password"
-                  value={passwordInput}
-                  onChange={e => { setPasswordInput(e.target.value); setPasswordError(false); }}
-                  onKeyDown={e => e.key === "Enter" && handleJoinAsMaster()}
-                />
-                {passwordError && <p style={{ color: "#EF476F", fontSize: 12, marginTop: 6 }}>❌ Wrong password</p>}
-              </div>
               <button style={s.btn} onClick={handleJoinAsMaster}>Enter as Scrum Master →</button>
             </>
           )}
